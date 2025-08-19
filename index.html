@@ -185,7 +185,7 @@ function createMatchCard(match) {
         action = `<button class="watch-live-btn">Watch Live</button>`;
         card.addEventListener('click', () => {
             const fullUrl = STREAM_PREFIX + encodeURIComponent(match.adfree_stream);
-            window.open(fullUrl, '_self');
+            window.location.href = fullUrl;
         });
     } else {
         const startTime = match.startTime || 'Date/Time not available';
