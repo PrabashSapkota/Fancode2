@@ -72,10 +72,33 @@ body {
 .matches-container {
     display: grid;
     width: 100%;
-    grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
     gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(220px,1fr));
 }
 
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .matches-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 cards per row on mobile */
+    }
+}
+@media (min-width: 481px) and (max-width: 767px) {
+    .matches-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+    .matches-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+@media (min-width: 1024px) {
+    .matches-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Match cards */
 .match-card {
     background: #2a2a2a;
     border-radius: 0.75rem;
