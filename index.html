@@ -167,7 +167,7 @@ body {
 </div>
 
 <main class="flex-grow main-content" id="mainContent">
-    <!-- Main video player remains unchanged -->
+    <!-- Player will be injected here -->
 </main>
 
 <script>
@@ -185,7 +185,36 @@ function createMatchCard(match) {
         action = `<button class="watch-live-btn">Watch Live</button>`;
         card.addEventListener('click', () => {
             const fullUrl = STREAM_PREFIX + encodeURIComponent(match.adfree_stream);
-            window.location.href = fullUrl;
+
+            // Inject player into main content with fullscreen button
+            const mainContent = document.getElementById('mainContent');
+            mainContent.innerHTML = `
+                <div id="playerWrapper" class="relative w-full h-[70vh] bg-black rounded-lg overflow-hidden">
+                    <iframe id="livePlayer" src="${fullUrl}" 
+                        class="w-full h-full"
+                        frameborder="0" allowfullscreen></iframe>
+                    
+                    <!-- Fullscreen button -->
+                    <button id="fullscreenBtn" 
+                        class="absolute bottom-4 right-4 bg-purple-600 hover:bg-purple-700 text-white font-bold px-4 py-2 rounded-lg shadow-lg">
+                        ⛶ Fullscreen
+                    </button>
+                </div>
+            `;
+
+            // Add fullscreen functionality
+            const fsBtn = document.getElementById("fullscreenBtn");
+            const playerWrapper = document.getElementById("playerWrapper");
+
+            fsBtn.addEventListener("click", () => {
+                if (playerWrapper.requestFullscreen) {
+                    playerWrapper.requestFullscreen();
+                } else if (playerWrapper.webkitRequestFullscreen) { // Safari
+                    playerWrapper.webkitRequestFullscreen();
+                } else if (playerWrapper.msRequestFullscreen) { // IE/Edge
+                    playerWrapper.msRequestFullscreen();
+                }
+            });
         });
     } else {
         const startTime = match.startTime || 'Date/Time not available';
