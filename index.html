@@ -24,35 +24,80 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 0.75rem 1.5rem;
-    background: #1e40af;
+    background: #2a2a2a;
     border-bottom: 2px solid #8b5cf6;
     color: #fff;
 }
-.navbar-logo { font-weight: 700; font-size: 1.25rem; color: #fff; }
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.navbar-logo img {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+}
+.navbar-logo .logo-divider {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
 .navbar-time { font-weight: 500; font-size: 1rem; color: #fff; }
 
-.blur-overlay {
+/* Control section (search + filter buttons) */
+.control-section {
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    flex-wrap: wrap;
+}
+.search-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 300px;
+    max-width: 100%;
+}
+.search-group input {
     width: 100%;
-    box-sizing: border-box;
+    padding: 0.5rem 3rem 0.5rem 1rem;
+    border: 1px solid #8b5cf6;
+    border-radius: 9999px;
+    background: #2a2a2a;
+    color: #fff;
+    font-size: 0.9rem;
+}
+.search-group input:focus {
+    outline: none;
+    border-color: #a78bfa;
+}
+.search-group .search-btn {
+    position: absolute;
+    right: 0.3rem;
+    padding: 0.4rem 0.8rem;
+    background: #8b5cf6;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-size: 0.85rem;
+}
+.search-group .search-btn:hover {
+    background: #a78bfa;
 }
 
 /* Filter buttons */
 .filter-section {
     display: flex;
-    justify-content: center;
-    margin-bottom: 1rem;
     border-radius: 9999px;
     overflow: hidden;
     border: 2px solid #8b5cf6;
-    width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
 }
-
 .filter-btn {
     flex: 1;
     padding: 0.5rem 1.5rem;
@@ -78,11 +123,48 @@ body {
 
 /* Responsive adjustments */
 @media (max-width: 480px) {
+    .navbar-logo img {
+        height: 30px;
+    }
+    .navbar-logo .logo-divider {
+        font-size: 1.2rem;
+    }
+    .navbar-time {
+        font-size: 0.85rem;
+    }
+    .control-section {
+        gap: 0.3rem;
+        padding: 0.5rem;
+    }
+    .search-group {
+        width: 200px;
+    }
+    .search-group input {
+        padding: 0.4rem 2.5rem 0.4rem 0.8rem;
+        font-size: 0.85rem;
+    }
+    .search-group .search-btn {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.75rem;
+    }
+    .filter-section {
+        flex-grow: 0;
+    }
+    .filter-btn {
+        padding: 0.4rem 1rem;
+        font-size: 0.85rem;
+    }
     .matches-container {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 @media (min-width: 481px) and (max-width: 767px) {
+    .control-section {
+        gap: 0.4rem;
+    }
+    .search-group {
+        width: 250px;
+    }
     .matches-container {
         grid-template-columns: repeat(3, 1fr);
     }
@@ -178,17 +260,32 @@ body {
 
 <!-- Navbar -->
 <div class="navbar">
-    <div class="navbar-logo">BINTV X FANCODE X SONY LIV</div>
+    <div class="navbar-logo">
+        <a href="https://bintv.fun" target="_blank">
+            <img src="https://lh3.googleusercontent.com/blogger_img_proxy/AEn0k_uZKB0zhek11ANhq5LfwlRRMNOeSDMn7Aj0fzH7ETucwRkXgGA0D4JJ7f_nB2AxgEuPRXoyMbxECL4kI4wRY7qC6TEg8NTRH4Rs0JB2IQ" alt="BINTV Logo">
+        </a>
+        <span class="logo-divider">X</span>
+        <img src="https://images.fancode.com/skillup-uploads/fc-web-logo/fc_logo_white_bg.svg?hash=eyJrZXkiOiJza2lsbHVwLXVwbG9hZHMvZmMtd2ViLWxvZ28vZmNfbG9nb193aGl0ZV9iZy5zdmciLCJlZGl0cyI6eyJyZXNpemUiOnsiZml0IjoiY29udGFpbiIsImJhY2tncm91bmQiOiJ0cmFuc3BhcmVudCIsIndpZHRoIjoyNjAsImhlaWdodCI6ODB9LCJ3ZWJwIjp7InF1YWxpdHkiOjYwLCJsb3NzbGVzcyI6ZmFsc2V9fSwib3V0cHV0Rm9ybWF0Ijoid2VicCJ9" alt="FanCode Logo">
+        <span class="logo-divider">X</span>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f7/SonyLIV_2020.png" alt="Sony Liv Logo">
+    </div>
     <div class="navbar-time" id="currentTime"></div>
 </div>
 
-<div class="blur-overlay" id="blurOverlay">
+<!-- Control section (search + filter buttons) -->
+<div class="control-section">
+    <div class="search-group">
+        <input type="text" id="searchInput" placeholder="Search matches by title...">
+        <button class="search-btn" id="searchButton">Search</button>
+    </div>
     <div class="filter-section">
         <button class="filter-btn active" data-filter="all">All</button>
         <button class="filter-btn" data-filter="live">Live</button>
         <button class="filter-btn" data-filter="upcoming">Upcoming</button>
     </div>
+</div>
 
+<div class="blur-overlay" id="blurOverlay">
     <div id="liveMatchesContainer">
         <div id="liveMatches" class="matches-container"></div>
     </div>
@@ -206,6 +303,8 @@ body {
 const STREAM_PREFIX = 'https://randomguys123.netlify.app/?url=https://allinonereborn.fun/events/player.html?url=https%3A%2F%2Fmini.allinonereborn.online%2Fevents%2Fstream_proxy.php%3Furl%3D';
 const JSON_URL = 'https://raw.githubusercontent.com/Jitendraunatti/fancode/refs/heads/main/data/fancode.json';
 const M3U_URL = 'https://raw.githubusercontent.com/abusaeeidx/SonyLiv-Event-Auto-update/refs/heads/main/sonyliv.m3u';
+
+let allMatches = []; // Store all matches globally for search filtering
 
 function parseM3U(m3uContent) {
     const lines = m3uContent.split('\n');
@@ -294,21 +393,47 @@ async function fetchMatches() {
         const m3uMatches = parseM3U(m3uText);
 
         // Combine matches with M3U (SonyLiv) first
-        const allMatches = [...m3uMatches, ...jsonMatches];
+        allMatches = [...m3uMatches, ...jsonMatches];
 
-        liveMatches.innerHTML = '';
-        upcomingMatches.innerHTML = '';
-
-        const live = allMatches.filter(m => m.status.toLowerCase() === 'live' || m.streamingStatus?.toLowerCase() === 'started');
-        const upcoming = allMatches.filter(m => m.status.toLowerCase() === 'not_started');
-
-        live.forEach(m => liveMatches.appendChild(createMatchCard(m)));
-        upcoming.forEach(m => upcomingMatches.appendChild(createMatchCard(m)));
-
+        // Initial render
+        renderMatches('');
     } catch (e) {
         liveMatches.innerHTML = '<p class="text-red-500">Failed to load matches.</p>';
         upcomingMatches.innerHTML = '<p class="text-red-500">Failed to load matches.</p>';
     }
+}
+
+function renderMatches(searchTerm) {
+    const liveMatches = document.getElementById('liveMatches');
+    const upcomingMatches = document.getElementById('upcomingMatches');
+    const activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
+
+    liveMatches.innerHTML = '';
+    upcomingMatches.innerHTML = '';
+
+    // Filter matches by search term (case-insensitive)
+    const filteredMatches = searchTerm
+        ? allMatches.filter(m => m.title.toLowerCase().includes(searchTerm.toLowerCase()))
+        : allMatches;
+
+    const live = filteredMatches.filter(m => m.status.toLowerCase() === 'live' || m.streamingStatus?.toLowerCase() === 'started');
+    const upcoming = filteredMatches.filter(m => m.status.toLowerCase() === 'not_started');
+
+    if (live.length === 0) {
+        liveMatches.innerHTML = '<p class="text-gray-400">No live matches found.</p>';
+    } else {
+        live.forEach(m => liveMatches.appendChild(createMatchCard(m)));
+    }
+
+    if (upcoming.length === 0) {
+        upcomingMatches.innerHTML = '<p class="text-gray-400">No upcoming matches found.</p>';
+    } else {
+        upcoming.forEach(m => upcomingMatches.appendChild(createMatchCard(m)));
+    }
+
+    // Update container visibility based on active filter
+    document.getElementById('liveMatchesContainer').style.display = (activeFilter === 'upcoming') ? 'none' : 'block';
+    document.getElementById('upcomingMatchesContainer').style.display = (activeFilter === 'live') ? 'none' : 'block';
 }
 
 window.addEventListener('load', fetchMatches);
@@ -318,11 +443,26 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-
-        const filter = btn.getAttribute('data-filter');
-        document.getElementById('liveMatchesContainer').style.display = (filter === 'upcoming') ? 'none' : 'block';
-        document.getElementById('upcomingMatchesContainer').style.display = (filter === 'live') ? 'none' : 'block';
+        renderMatches(document.getElementById('searchInput').value);
     });
+});
+
+// Search functionality
+document.getElementById('searchInput').addEventListener('input', () => {
+    const searchTerm = document.getElementById('searchInput').value;
+    renderMatches(searchTerm);
+});
+
+document.getElementById('searchButton').addEventListener('click', () => {
+    const searchTerm = document.getElementById('searchInput').value;
+    renderMatches(searchTerm);
+});
+
+document.getElementById('searchInput').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        const searchTerm = document.getElementById('searchInput').value;
+        renderMatches(searchTerm);
+    }
 });
 
 // Navbar time
