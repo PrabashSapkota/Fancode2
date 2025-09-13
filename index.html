@@ -121,58 +121,6 @@ body {
     grid-template-columns: repeat(auto-fill, minmax(220px,1fr));
 }
 
-/* Lock screen */
-#lockScreen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(26, 26, 26, 0.95);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    color: #fff;
-    text-align: center;
-    padding: 1rem;
-    box-sizing: border-box;
-}
-#lockScreen h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    color: #8b5cf6;
-}
-#lockScreen p {
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
-    max-width: 400px;
-}
-#lockScreen button {
-    padding: 0.75rem 2rem;
-    background: #8b5cf6;
-    color: #fff;
-    font-weight: 600;
-    border: none;
-    border-radius: 9999px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-#lockScreen button:hover {
-    background: #a78bfa;
-}
-#lockScreen button:disabled {
-    background: #6b7280;
-    cursor: not-allowed;
-}
-#countdown {
-    font-size: 1.25rem;
-    color: #fff;
-    margin-top: 1rem;
-    display: none;
-}
-
 /* Responsive adjustments */
 @media (max-width: 480px) {
     .navbar-logo img {
@@ -208,18 +156,6 @@ body {
     }
     .matches-container {
         grid-template-columns: repeat(2, 1fr);
-    }
-    #lockScreen h2 {
-        font-size: 1.25rem;
-    }
-    #lockScreen p {
-        font-size: 0.9rem;
-    }
-    #lockScreen button {
-        padding: 0.6rem 1.5rem;
-    }
-    #countdown {
-        font-size: 1rem;
     }
 }
 @media (min-width: 481px) and (max-width: 767px) {
@@ -322,14 +258,6 @@ body {
 </head>
 <body>
 
-<!-- Lock screen -->
-<div id="lockScreen" style="display: none;">
-    <h2>Welcome to BINTV Matches</h2>
-    <p>Click the button below to view our ads, wait for 20 seconds, and unlock the page! The page will be unlocked for 24hr</p>
-    <button id="unlockButton">View Ads & Unlock</button>
-    <div id="countdown"></div>
-</div>
-
 <!-- Navbar -->
 <div class="navbar">
     <div class="navbar-logo">
@@ -337,7 +265,7 @@ body {
             <img src="https://lh3.googleusercontent.com/blogger_img_proxy/AEn0k_uZKB0zhek11ANhq5LfwlRRMNOeSDMn7Aj0fzH7ETucwRkXgGA0D4JJ7f_nB2AxgEuPRXoyMbxECL4kI4wRY7qC6TEg8NTRH4Rs0JB2IQ" alt="BINTV Logo">
         </a>
         <span class="logo-divider">X</span>
-        <img src="https://images.fancode.com/skillup-uploads/fc-web-logo/fc_logo_white_bg.svg?hash=eyJrZXkiOiJza2lsbHVwLXVwbG9hZHMvZmMtd2ViLWxvZ28vZmNfbG9nb193aGl0ZV9iZy5zdmciLCJlZGl0cyI6eyJyZXNpemUiOnsiZml0IjoiY29udGFpbiIsImJhY2tncm91bmQiOiJ0cmFuc3BhcmVudCIsIndpZHRoIjoyNjAsImhlaWdodCI6ODB9LCJ3ZWJwIjp7InF1YWxpdHkiOjYwLCJsb3NzbGVzcyI6ZmFsc2V9fSwib3V0cHV0Rm9ybWF0Ijoid2VicCJ9" alt="FanCode Logo">
+        <img src="https://images.fancode.com/skillup-Uploads/fc-web-logo/fc_logo_white_bg.svg?hash=eyJrZXkiOiJza2lsbHVwLXVwbG9hZHMvZmMtd2ViLWxvZ28vZmNfbG9nb193aGl0ZV9iZy5zdmciLCJlZGl0cyI6eyJyZXNpemUiOnsiZml0IjoiY29udGFpbiIsImJhY2tncm91bmQiOiJ0cmFuc3BhcmVudCIsIndpZHRoIjoyNjAsImhlaWdodCI6ODB9LCJ3ZWJwIjp7InF1YWxpdHkiOjYwLCJsb3NzbGVzcyI6ZmFsc2V9fSwib3V0cHV0Rm9ybWF0Ijoid2VicCJ9" alt="FanCode Logo">
         <span class="logo-divider">X</span>
         <img src="https://upload.wikimedia.org/wikipedia/commons/f/f7/SonyLIV_2020.png" alt="Sony Liv Logo">
     </div>
@@ -375,7 +303,6 @@ body {
 const STREAM_PREFIX = 'http://randomguys123.netlify.app/?url=https://allinonereborn.fun/events/player.html?url=https%3A%2F%2Fmini.allinonereborn.online%2Fevents%2Fstream_proxy.php%3Furl%3D';
 const JSON_URL = 'https://raw.githubusercontent.com/Jitendra-unatti/fancode/refs/heads/main/data/fancode.json';
 const M3U_URL = 'https://raw.githubusercontent.com/abusaeeidx/SonyLiv-Event-Auto-update/refs/heads/main/sonyliv.m3u';
-const AD_URL = 'https://otieu.com/4/9755429';
 
 let allMatches = []; // Store all matches globally for search filtering
 
@@ -509,49 +436,8 @@ function renderMatches(searchTerm) {
     document.getElementById('upcomingMatchesContainer').style.display = (activeFilter === 'live') ? 'none' : 'block';
 }
 
-// Lock screen logic
-function checkUnlock() {
-    const unlockTime = localStorage.getItem('unlockTime');
-    const currentTime = Date.now();
-    const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-
-    if (unlockTime && currentTime - unlockTime < twentyFourHours) {
-        document.getElementById('lockScreen').style.display = 'none';
-        document.body.style.overflow = 'auto'; // Enable scrolling
-        fetchMatches(); // Load matches if unlocked
-    } else {
-        document.getElementById('lockScreen').style.display = 'flex';
-        document.body.style.overflow = 'hidden'; // Disable scrolling
-    }
-}
-
-document.getElementById('unlockButton').addEventListener('click', () => {
-    // Open ad link in new tab
-    window.open(AD_URL, '_blank');
-    
-    // Start countdown
-    document.getElementById('unlockButton').disabled = true;
-    document.getElementById('countdown').style.display = 'block';
-
-    let timeLeft = 20;
-    document.getElementById('countdown').textContent = `Waiting: ${timeLeft} seconds`;
-
-    const countdownInterval = setInterval(() => {
-        timeLeft--;
-        document.getElementById('countdown').textContent = `Waiting: ${timeLeft} seconds`;
-
-        if (timeLeft <= 0) {
-            clearInterval(countdownInterval);
-            localStorage.setItem('unlockTime', Date.now());
-            document.getElementById('lockScreen').style.display = 'none';
-            document.body.style.overflow = 'auto';
-            fetchMatches(); // Load matches after unlock
-        }
-    }, 1000);
-});
-
-// Initial check on load
-window.addEventListener('load', checkUnlock);
+// Initial fetch on load
+window.addEventListener('load', fetchMatches);
 
 document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -590,8 +476,3 @@ setInterval(updateTime, 1000);
 </script>
 </body>
 </html>
-
-
-
-
-
